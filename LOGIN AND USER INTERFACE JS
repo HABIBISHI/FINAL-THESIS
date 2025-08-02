@@ -1,0 +1,488 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Constants and Data
+    const servicesData = {
+        grooming: {
+            title: "Professional Grooming",
+            description: "Our full grooming service includes bath, haircut, nail trimming, and ear cleaning.",
+            price: "1",
+            duration: "1-2 hours",
+            image: "images/grooming.jpg"
+        },
+        consultation: {
+            title: "Veterinary Consultation",
+            description: "Comprehensive health assessments with our experienced veterinarians.",
+            price: "2",
+            duration: "30-45 minutes",
+            image: "images/consultation.jpg"
+        },
+        surgery: {
+            title: "Surgical Services",
+          
+            description: "Our surgical suite is equipped for a range of procedures.",
+            contactForBooking: true
+        },
+        laboratory: {
+            title: "Diagnostic Laboratory",
+            description: "On-site laboratory services for fast, accurate results.",
+            price: "3"
+        },
+        vaccination: {
+            title: "Vaccination Services",
+            description: "Essential vaccinations including rabies, distemper, parvovirus.",
+            price: "4"
+        },
+        appointment: {
+            title: "Appointment Booking",
+            description: "Schedule your pet's visit with our veterinary team.",
+            bookable: true
+        }
+    };
+
+    // Modal functionality
+    const serviceModal = document.getElementById('serviceModal');
+    const serviceModalTitle = document.getElementById('modalTitle');
+    const serviceModalDescription = document.getElementById('modalDescription');
+    const serviceModalDetails = document.getElementById('modalDetails');
+    const serviceModalFooter = document.querySelector('.modal-footer');
+    const serviceModalCloseBtn = document.querySelector('#serviceModal .close-btn');
+const serviceModalImage = document.getElementById('modalServiceImage');
+      // Show service modal function
+    function showServiceModal(service) {
+        serviceModalTitle.textContent = service.title;
+        serviceModalDescription.textContent = service.description;
+        
+        
+        // Clear previous details and footer
+       serviceModalDetails.innerHTML = '';
+        serviceModalFooter.innerHTML = '';
+        
+        if (service.price || service.duration) {
+            let detailsHTML = '';
+            if (service.price) detailsHTML += `<p><strong>Price:</strong> ${service.price}</p>`;
+            if (service.duration) detailsHTML += `<p><strong>Duration:</strong> ${service.duration}</p>`;
+            serviceModalDetails.innerHTML = detailsHTML;
+        }
+        
+        // Add booking options
+        if (service.bookable) {
+            const bookBtn = document.createElement('button');
+            bookBtn.className = 'book-btn';
+            bookBtn.textContent = 'Book Now';
+            bookBtn.addEventListener('click', function() {
+                alert(`Booking ${service.title} service`);
+            });
+            serviceModalFooter.appendChild(bookBtn);
+        } else if (service.contactForBooking) {
+            const contactMsg = document.createElement('p');
+            contactMsg.className = 'contact-msg';
+            contactMsg.innerHTML = `Please <a href="contact.html">contact us</a> to schedule this service`;
+            serviceModalFooter.appendChild(contactMsg);
+        }
+        
+        serviceModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal function
+    function closeServiceModal() {
+        serviceModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Set up service card click handlers
+    document.querySelectorAll('.service-card .view-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const serviceCard = this.closest('.service-card');
+            if (serviceCard) {
+                const serviceTitle = serviceCard.querySelector('h3').textContent;
+                
+                // Find matching service (case-insensitive)
+                const serviceKey = Object.keys(servicesData).find(key => 
+                    servicesData[key].title.toLowerCase() === serviceTitle.toLowerCase()
+                );
+                
+                if (serviceKey) {
+                    showServiceModal(servicesData[serviceKey]);
+                } else {
+                    console.error('Service not found:', serviceTitle);
+                }
+            }
+        });
+    });
+
+    // Close modal events
+    serviceModalCloseBtn.addEventListener('click', closeServiceModal);
+    window.addEventListener('click', function(e) {
+        if (e.target === serviceModal) {
+            closeServiceModal();
+        }
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && serviceModal.style.display === 'flex') {
+            closeServiceModal();
+        }
+    });
+
+    const tipsData = {
+        chihuahua: {
+            title: "Chihuahua Care Tips",
+            image: "image/Chihuahua.jpg",
+            description: "Chihuahuas may be small, but they need big care! Keep them warm in cool weather..."
+        },
+        pomeranian: {
+            title: "Pomeranian Care Tips",
+            image: "image/Pomeranian.jpg",
+            description: "Poms need daily brushing for their fluffy coat and monthly grooming..."
+        },
+        "german shepherd": {
+            title: "German Shepherd Care Tips",
+            image: "image/GermanShepherd.jpg",
+            description: "Active and intelligent, German Shepherds need daily exercise..."
+        },
+        bulldog: {
+            title: "Bulldog Care Tips",
+            image: "image/Bulldog.jpg",
+            description: "Bulldogs are lovable but need special care..."
+        },
+        aspin: {
+            title: "Aspin Care Tips",
+            image: "image/Aspin.jpg",
+            description: "ASPINs are tough, smart, and low-maintenance Philippine dogs..."
+        },
+        poodle: {
+            title: "Poodle Care Tips",
+            image: "image/Poodle.jpg",
+            description: "Poodles need regular grooming every 4-6 weeks..."
+        }
+    };
+
+    // Auth Dropdown Functionality
+    const setupAuthDropdowns = () => {
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const loginDropdown = document.getElementById('loginDropdown');
+        const signupDropdown = document.getElementById('signupDropdown');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+
+        // Close buttons (dynamically selected in case they don't exist in HTML)
+        const loginCloseBtn = loginDropdown?.querySelector('.close-btn');
+        const signupCloseBtn = signupDropdown?.querySelector('.close-btn');
+
+        // Toggle dropdown visibility
+        const toggleDropdown = (dropdown, button, show, otherDropdown = null) => {
+            if (!dropdown || !button) return;
+            
+            // Update ARIA attributes for accessibility
+            dropdown.setAttribute('aria-hidden', String(!show));
+            button.setAttribute('aria-expanded', String(show));
+            
+            if (show) {
+                dropdown.classList.add('show');
+                // Hide other dropdown if provided
+                if (otherDropdown) {
+                    otherDropdown.classList.remove('show');
+                    otherDropdown.setAttribute('aria-hidden', 'true');
+                    const otherButton = otherDropdown === loginDropdown ? signupBtn : loginBtn;
+                    otherButton?.setAttribute('aria-expanded', 'false');
+                }
+            } else {
+                dropdown.classList.remove('show');
+            }
+        };
+
+        // Event Handlers
+        const handleLoginClick = (e) => {
+            e.stopPropagation();
+            const isExpanded = loginBtn.getAttribute('aria-expanded') === 'true';
+            toggleDropdown(loginDropdown, loginBtn, !isExpanded, signupDropdown);
+        };
+
+        const handleSignupClick = (e) => {
+            e.stopPropagation();
+            const isExpanded = signupBtn.getAttribute('aria-expanded') === 'true';
+            toggleDropdown(signupDropdown, signupBtn, !isExpanded, loginDropdown);
+        };
+
+        const handleSwitchToSignup = (e) => {
+            e.preventDefault();
+            toggleDropdown(loginDropdown, loginBtn, false);
+            toggleDropdown(signupDropdown, signupBtn, true);
+        };
+
+        const handleSwitchToLogin = (e) => {
+            e.preventDefault();
+            toggleDropdown(signupDropdown, signupBtn, false);
+            toggleDropdown(loginDropdown, loginBtn, true);
+        };
+
+        const handleOutsideClick = (e) => {
+            if (!loginDropdown.contains(e.target) && e.target !== loginBtn) {
+                toggleDropdown(loginDropdown, loginBtn, false);
+            }
+            if (!signupDropdown.contains(e.target) && e.target !== signupBtn) {
+                toggleDropdown(signupDropdown, signupBtn, false);
+            }
+        };
+
+        const handleLoginSubmit = (e) => {
+            e.preventDefault();
+            // Add your login logic here
+            alert('Login functionality would be implemented here');
+            toggleDropdown(loginDropdown, loginBtn, false);
+        };
+
+        const handleSignupSubmit = (e) => {
+            e.preventDefault();
+            // Add your signup logic here
+            alert('Signup functionality would be implemented here');
+            toggleDropdown(signupDropdown, signupBtn, false);
+        };
+
+        // Event Listeners
+        if (loginBtn && loginDropdown) {
+            loginBtn.addEventListener('click', handleLoginClick);
+        }
+
+        if (signupBtn && signupDropdown) {
+            signupBtn.addEventListener('click', handleSignupClick);
+        }
+
+        if (loginCloseBtn) {
+            loginCloseBtn.addEventListener('click', () => toggleDropdown(loginDropdown, loginBtn, false));
+        }
+
+        if (signupCloseBtn) {
+            signupCloseBtn.addEventListener('click', () => toggleDropdown(signupDropdown, signupBtn, false));
+        }
+
+        if (switchToSignup) {
+            switchToSignup.addEventListener('click', handleSwitchToSignup);
+        }
+
+        if (switchToLogin) {
+            switchToLogin.addEventListener('click', handleSwitchToLogin);
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', handleLoginSubmit);
+        }
+
+        if (signupForm) {
+            signupForm.addEventListener('submit', handleSignupSubmit);
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', handleOutsideClick);
+
+        // Prevent dropdown from closing when clicking inside
+        loginDropdown?.addEventListener('click', (e) => e.stopPropagation());
+        signupDropdown?.addEventListener('click', (e) => e.stopPropagation());
+
+        // Close with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleDropdown(loginDropdown, loginBtn, false);
+                toggleDropdown(signupDropdown, signupBtn, false);
+            }
+        });
+    };
+
+    // Slider Functionality
+    const setupSlider = () => {
+        const slider = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        const sliderContainer = document.querySelector('.slider-container');
+
+        if (!slider || slides.length === 0 || !dots.length || !prevBtn || !nextBtn) return;
+
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        let slideInterval;
+
+        const goToSlide = (slideIndex) => {
+            currentSlide = slideIndex;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
+        };
+
+        const nextSlide = () => goToSlide((currentSlide + 1) % slideCount);
+        const prevSlide = () => goToSlide((currentSlide - 1 + slideCount) % slideCount);
+
+        const startAutoSlide = () => {
+            stopAutoSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        };
+
+        const stopAutoSlide = () => {
+            if (slideInterval) clearInterval(slideInterval);
+        };
+
+        // Initialize
+        goToSlide(0);
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        dots.forEach((dot, index) => dot.addEventListener('click', () => goToSlide(index)));
+        startAutoSlide();
+
+        if (sliderContainer) {
+            sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+            sliderContainer.addEventListener('mouseleave', startAutoSlide);
+        }
+    };
+
+    // Modal Functionality
+    const setupModals = () => {
+        const modal = document.getElementById('dogModal');
+        const closeBtn = modal?.querySelector('.close-btn');
+
+        if (!modal || !closeBtn) {
+            console.log('Modal or close button not found - skipping modal setup');
+            return;
+        }
+
+        const showModal = (content, isService = false) => {
+            const modalImage = modal.querySelector('#modalImage');
+            const modalTitle = modal.querySelector('#modalTitle');
+            const modalDescription = modal.querySelector('#modalDescription');
+            const modalFooter = modal.querySelector('.modal-footer') || document.createElement('div');
+
+            // Clear existing footer if it exists
+            if (modal.querySelector('.modal-footer')) {
+                modal.querySelector('.modal-footer').remove();
+            }
+
+            modalFooter.className = 'modal-footer';
+            modalFooter.innerHTML = '';
+
+            if (modalImage && modalTitle && modalDescription) {
+                modalImage.src = content.image;
+                modalImage.alt = content.title;
+                modalTitle.textContent = content.title;
+                modalDescription.textContent = content.description;
+
+                if (isService) {
+                    // Add service details
+                    if (content.price || content.duration) {
+                        const details = document.createElement('div');
+                        details.className = 'service-details';
+                        details.innerHTML = `
+                            ${content.price ? `<p><strong>Price:</strong> ${content.price}</p>` : ''}
+                            ${content.duration ? `<p><strong>Duration:</strong> ${content.duration}</p>` : ''}
+                        `;
+                        modalDescription.after(details);
+                    }
+
+                    // Add booking options
+                    if (content.bookable) {
+                        const bookBtn = document.createElement('button');
+                        bookBtn.className = 'book-btn';
+                        bookBtn.textContent = 'Book Now';
+                        bookBtn.addEventListener('click', () => {
+                            alert(`Booking ${content.title} service`);
+                        });
+                        modalFooter.appendChild(bookBtn);
+                    } else if (content.contactForBooking) {
+                        const contactMsg = document.createElement('p');
+                        contactMsg.className = 'contact-msg';
+                        contactMsg.innerHTML = `Please <a href="#contact">contact us</a> to schedule ${content.title.toLowerCase()}`;
+                        modalFooter.appendChild(contactMsg);
+                    }
+                }
+
+                modal.querySelector('.modal-content').appendChild(modalFooter);
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        };
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        };
+
+        // Service cards
+        document.querySelectorAll('.service-card .view-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const serviceCard = button.closest('.service-card');
+        if (serviceCard) {
+            const serviceTitle = serviceCard.querySelector('h3').textContent;
+            
+            // Find the service by title (case-insensitive)
+            const serviceKey = Object.keys(servicesData).find(key => 
+                servicesData[key].title.toLowerCase() === serviceTitle.toLowerCase()
+            );
+            
+            if (serviceKey) {
+                // Use the existing serviceModal 
+                const modal = document.getElementById('serviceModal');
+                const modalImage = modal.querySelector('#modalImage');
+                const modalTitle = modal.querySelector('#modalTitle');
+                const modalDescription = modal.querySelector('#modalDescription');
+                const modalDetails = modal.querySelector('#modalDetails');
+                const modalFooter = modal.querySelector('.modal-footer');
+                
+                const service = servicesData[serviceKey];
+                
+                modalImage.src = service.image;
+                modalImage.alt = service.title;
+                modalTitle.textContent = service.title;
+                modalDescription.textContent = service.description;
+                
+                modalDetails.innerHTML = '';
+                modalFooter.innerHTML = '';
+                
+                if (service.price || service.duration) {
+                    let detailsHTML = '';
+                    if (service.price) detailsHTML += `<p><strong>Price:</strong> ${service.price}</p>`;
+                    if (service.duration) detailsHTML += `<p><strong>Duration:</strong> ${service.duration}</p>`;
+                    modalDetails.innerHTML = detailsHTML;
+                }
+                
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                console.error('Service not found:', serviceTitle);
+            }
+        }
+    });
+});
+
+        // Dog care tips
+        document.querySelectorAll('.dog-card .view-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dogCard = button.closest('.dog-card');
+                if (dogCard) {
+                    const dogType = dogCard.querySelector('.dog-name')?.textContent.toLowerCase();
+                    if (dogType && tipsData[dogType]) {
+                        showModal(tipsData[dogType]);
+                    } else {
+                        showModal({
+                            title: dogCard.querySelector('.dog-name').textContent + " Care Tips",
+                            image: dogCard.querySelector('.dog-image').src,
+                            description: "General care information for this breed."
+                        });
+                    }
+                }
+            });
+        });
+
+        // Close modal events
+        closeBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => e.target === modal && closeModal());
+        document.addEventListener('keydown', (e) => e.key === 'Escape' && modal.style.display === 'flex' && closeModal());
+    };
+
+    // Initialize all functionality
+    setupAuthDropdowns();
+    setupSlider();
+    setupModals();
+});
