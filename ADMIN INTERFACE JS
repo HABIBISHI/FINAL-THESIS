@@ -1,0 +1,65 @@
+document.addEventListener('DOMContentLoaded', function() {
+// Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Update active state in sidebar
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Show the corresponding section
+                const section = this.getAttribute('data-section');
+                document.querySelectorAll('.section').forEach(sec => {
+                    sec.classList.remove('active');
+                });
+                document.querySelector(`#${section}-section`).classList.add('active');
+            });
+        });
+
+        // Appointment status toggle functionality
+        document.querySelectorAll('.btn-success.btn-sm').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const statusCell = row.querySelector('td:nth-child(5)');
+                statusCell.textContent = 'Confirmed';
+                statusCell.className = 'status-confirmed';
+            });
+        });
+
+        document.querySelectorAll('.btn-danger.btn-sm').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const statusCell = row.querySelector('td:nth-child(5)');
+                statusCell.textContent = 'Cancelled';
+                statusCell.className = 'status-cancelled';
+            });
+        });
+
+        // Pet record actions
+        document.querySelectorAll('.btn-primary.btn-sm').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const petName = row.querySelector('td:nth-child(1)').textContent;
+                const notes = row.querySelector('td:nth-child(7)').textContent;
+                alert(`Viewing details for ${petName}\nNotes: ${notes}`);
+            });
+        });
+
+        document.querySelectorAll('.btn-success.btn-sm').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const petName = row.querySelector('td:nth-child(1)').textContent;
+                alert(`Editing record for ${petName}`);
+            });
+        });
+
+        document.querySelectorAll('.btn-danger.btn-sm').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this pet record?')) {
+                    const row = this.closest('tr');
+                    row.remove();
+                }
+            });
+        });
+      });
