@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <title>Shepherd Animal Clinic</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Shepherd Animal Clinic</h2>
+            <span>Dashboard</span>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" data-section="appointments">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Appointments</span>
+            </div>
+            <div class="nav-item" data-section="pet-records">
+                <i class="fas fa-paw"></i>
+                <span>Pet Records</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+    <div class="user-profile">
+        <div class="user-avatar">
+            <img src="https://via.placeholder.com/40" alt="Admin Avatar">
+        </div>
+        <div class="user-details">
+            <span class="user-name">Admin User</span>
+            <span class="user-role">Administrator</span>
+        </div>
+        <div class="dropdown-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+</div>
+
+        <div class="content">
+            <div class="cards">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Today's Appointments</div>
+                        <div class="card-icon icon-primary">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">1</div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Pending Confirmations</div>
+                        <div class="card-icon icon-warning">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="card-value">1</div>
+                </div>
+            </div>
+
+            <div class="section active" id="appointments-section">
+                <div class="section-header">
+                    <div class="section-title">Today's Appointments</div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pet Name</th>
+                            <th>Owner</th>
+                            <th>Date & Time</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>asdxsdf</td>
+                            <td>asfdasdasddsa</td>
+                            <td>asdasdasdasdas</td>
+                            <td>Annual Checkup</td>
+                            <td class="status-confirmed">Confirmed</td>
+                            <td class="notes-cell">Routine checkup, no issues reported</td>
+                            <td>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>asd</td>
+                            <td>dfdasd</td>
+                            <td>asfddsfsdfsd</td>
+                            <td>Vaccination</td>
+                            <td class="status-pending">Pending</td>
+                            <td class="notes-cell">Needs vaccines</td>
+                            <td>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-times"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section" id="pet-records-section">
+                <div class="section-header">
+                    <div class="section-title">Pet Records</div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Breed</th>
+                            <th>Age</th>
+                            <th>Owner</th>
+                            <th>Last Visit</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>sadasdsad</td>
+                            <td>sadasdsadas</td>
+                            <td>assdad</td>
+                            <td>asd</td>
+                            <td>adsada</td>
+                            <td>asvgqwd</td>
+                            <td class="notes-cell">Allergic to penicillin</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>asdasdasdas</td>
+                            <td>asdasdqweqw</td>
+                            <td>asdasdqwewqeqw</td>
+                            <td>assadf</td>
+                            <td>asfasdfsdfsfdsfdasd</td>
+                            <td>asdasdasfqawfqd</td>
+                            <td class="notes-cell">Recent weight loss, monitor</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-success btn-sm"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
