@@ -1,0 +1,7 @@
+ document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the form data to your server
+            // For this example, we'll just show the confirmation message
+            document.getElementById('appointmentForm').style.display = 'none';
+            document.getElementById('confirmation').style.display = 'block';
+        });
